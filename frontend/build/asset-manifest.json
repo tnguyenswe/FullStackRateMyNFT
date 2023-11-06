@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/RateMyNFT/static/css/main.e6c13ad2.css",
+    "main.js": "/RateMyNFT/static/js/main.1a16e83e.js",
+    "static/js/787.22edae46.chunk.js": "/RateMyNFT/static/js/787.22edae46.chunk.js",
+    "static/media/ellipse.png": "/RateMyNFT/static/media/ellipse.e96de88f180a9f2fb750.png",
+    "static/media/userPFP.jpeg": "/RateMyNFT/static/media/userPFP.2b86924497840099dd2c.jpeg",
+    "static/media/bayc-logo.png": "/RateMyNFT/static/media/bayc-logo.b122b22669751497543e.png",
+    "index.html": "/RateMyNFT/index.html",
+    "static/media/ethereum-ic.svg": "/RateMyNFT/static/media/ethereum-ic.723533e16b0f971dcc2651827bd89b3d.svg",
+    "static/media/search-ic.svg": "/RateMyNFT/static/media/search-ic.c252c7ccb9062b502089360f4ccaf46f.svg",
+    "main.e6c13ad2.css.map": "/RateMyNFT/static/css/main.e6c13ad2.css.map",
+    "main.1a16e83e.js.map": "/RateMyNFT/static/js/main.1a16e83e.js.map",
+    "787.22edae46.chunk.js.map": "/RateMyNFT/static/js/787.22edae46.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.1a16e83e.js"
+  ]
+}
