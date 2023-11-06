@@ -45,7 +45,7 @@ app.get('/reviews/:contractAddress', (req, res) => {
   });
 
 app.post("/reviews", (req, res) => {
-    const {rating, body, author, contractAddress} = req.body;
+    const {rating, body, author, contractAddress, projectName} = req.body;
     console.log(req.body);
 
     const query = "INSERT INTO Reviews (`rating`,`body`,`author`, `contractAddress`, `projectName`) VALUES (?, ?, ?, ?, ?)"

@@ -23,13 +23,6 @@ const CardsData = [
         primary: 'https://lh3.googleusercontent.com/XN0XuD8Uh3jyRWNtPTFeXJg_ht8m5ofDx6aHklOiy4amhFuWUa0JaR6It49AH8tlnYS386Q0TW_-Lmedn0UET_ko1a3CbJGeu5iHMg=s168',
         contractAddress: '0x49cf6f5d44e70224e2e23fdcdd2c053f30ada28b',
     },
-    // {
-    //     projectName: 'Psychedelics Anonymous Genesis',
-    //     creatorName: 'Psychedelics-Anonymous',
-    //     creatorLink: 'https://opensea.io/Psychedelics-Anonymous?tab=created',
-    //     background: 'https://lh3.googleusercontent.com/Ztbsa_YCs23MJCTLA9DiQUyeO3uSJXRRwEQtoUMF39vhqaxTqrshwU_g1sGRH0XvC7X6w1o1WIR_r7KsO0fNbA8PKQbfiCvBoxcjBw=h600',
-    //     primary: 'https://lh3.googleusercontent.com/9VndAx-5SvVdamB8KvABGcw2bdXMdeyEYdhHJ22WMV98C2yS85SDT5rnBtT0zOxVjeJ6KBz2fXKXcYSIXeOc7aGiU4i0Rx9IwaMfO9o=s130'
-    // },
     {
         projectName: 'Azuki',
         projectHref: 'Azuki',

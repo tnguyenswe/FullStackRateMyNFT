@@ -10,7 +10,7 @@ import { useLocation, Link } from "react-router-dom";
 import { CircleWavyCheck } from 'phosphor-react';
 
 
-const CardHref = (props) => (<Link to={`/reviews/${props.projectHref}`} state={{ projectName: props.projectName, background: props.background, primary: props.primary, creatorName: props.creatorName, projectHref: props.projectHref, contractAddress: props.contractAddress }} {...props} sx={{ textDecoration: 'none', color: 'inherit' }}>{props.children}</Link>)
+const CardHref = (props) => (<Box state={{ projectName: props.projectName, background: props.background, primary: props.primary, creatorName: props.creatorName, projectHref: props.projectHref, contractAddress: props.contractAddress }} {...props} sx={{ textDecoration: 'none', color: 'inherit' }}>{props.children}</Box>)
 
 const CardLayout = (props) => (<Flex {...props} sx={{ minWidth: '90vw', maxWidth: '90vw', height: '100%', borderRadius: '40px', flexDirection: 'column', pb: '30px', overflow: 'hidden' }}>{props.children}</Flex>)
 
@@ -23,7 +23,6 @@ const TextContainer = (props) => (<Flex {...props} sx={{ alignSelf: ['center', '
 const Reviews = (props) => {
     const location = useLocation();
     const CardsData = location.state
-    const [filteredReviews, setFilteredReviews] = useState([]);
     const [responseData, setResponseData] = useState(null);
     const [error, setError] = useState(null);
     const [totalSupply, setTotalSupply] = useState(null);
@@ -111,9 +110,9 @@ const Reviews = (props) => {
                             </TextContainer>
                         </Flex>
                         <Grid sx={{ gridTemplateColumns: ['1fr 1fr', '1fr 1fr 1fr'], width: ['90%', null, null, '100%'], pt: ['20px', null, null, '0px'], justifySelf: ['center', null, null, 'end'], alignSelf: 'center' }}>
-                            <Flex sx={{ flexDirection: 'column' }}>
+                            <Flex sx={{ flexDirection: 'column', justifyContent: 'center'}}>
                                 <Text sx={{ fontSize: 4, fontWeight: '700', textAlign: ['center', null, null, 'start'] }}>
-                                    {totalSupply ? totalSupply : "Fetching Data..."}
+                                    {totalSupply ? totalSupply : "Loading..."}
                                 </Text>
                                 <Text sx={{ fontSize: 2, color: 'gray50', textAlign: ['center', null, null, 'start'] }}>
                                     Total Supply
@@ -138,28 +137,41 @@ const Reviews = (props) => {
                                 </Text>
                             </Flex> */}
 
-                            <Flex sx={{ flexDirection: 'column' }}>
+                            <Flex sx={{ flexDirection: 'column', justifyContent: 'center' }}>
                                 <Text sx={{ fontSize: 4, fontWeight: '700', textAlign: ['center', null, null, 'start'] }}>
-                                    Ξ {responseData ? (responseData && responseData.price && responseData.price.totalNative) : "Fetching data..."}
+                                    Ξ {responseData ? (responseData && responseData.price && responseData.price.totalNative) : "Loading..."}
                                 </Text>
                                 <Text sx={{ fontSize: 2, color: 'gray50', textAlign: ['center', null, null, 'start'] }}>
                                     Floor Price
                                 </Text>
                             </Flex>
 
-                            <Box sx={{
-                                borderRadius: '100px',
-                                px: '24px',
-                                py: '10px',
-                                background: 'linear-gradient(95.41deg, #3B5AD5 0%, #2745C3 100%)',
-                                minWidth: '40px',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                alignSelf: 'center',
-                                justifySelf: 'center'
-                            }}>
-                                <Text sx={{fontWeight: '700'}}>Write Review</Text>
-                            </Box>
+                            <Link sx={{
+                                    borderRadius: '100px',
+
+                                    background: 'linear-gradient(95.41deg, #3B5AD5 0%, #2745C3 100%)',
+                                    minWidth: '40px',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    alignSelf: 'center',
+                                    justifySelf: 'center',
+                                    textDecoration: 'none', 
+                                    color: 'inherit'
+                                }} to={`/createReview/${CardsData.projectHref}`} state={{projectName: CardsData.projectName, background: CardsData.background, primary: CardsData.primary, creatorName: CardsData.creatorName, projectHref: CardsData.projectHref, contractAddress: CardsData.contractAddress}} {...CardsData} >
+                                <Box sx={{
+                                    borderRadius: '100px',
+                                    px: '24px',
+                                    py: '10px',
+                                    background: 'linear-gradient(95.41deg, #3B5AD5 0%, #2745C3 100%)',
+                                    minWidth: '40px',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    alignSelf: 'center',
+                                    justifySelf: 'center'
+                                }}>
+                                    <Text sx={{fontWeight: '700', whiteSpace: 'nowrap'}}>Write Review</Text>
+                                </Box>
+                            </Link>
                         </Grid>
                     </Flex>
 

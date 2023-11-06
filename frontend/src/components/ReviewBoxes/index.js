@@ -2,12 +2,27 @@
 import React from "react";
 import { Grid, Label, Box, Input, Textarea, Button, Flex, Image, Text, Link } from "theme-ui";
 import Xlogo from '../../assets/x-logo.png';
-
+import Star from '../../assets/star.png';
 
 const ReviewBoxes = (props) => {
-    return (
-        <Flex sx={{ backgroundColor: 'navy50', px: '10px', py: '30px', borderRadius: '10px', mb: '20px', flexDirection: 'column' }}>
+    const stars = [];
 
+    for (let i = 0; i < props.rating; i++) {
+        stars.push(<Image
+            key={i}
+            src={Star}
+            alt="Star" 
+            sx={{maxWidth: '16px'}}/>)
+    }
+
+    return (
+        <Flex sx={{ backgroundColor: 'navy50', px: '30px', py: '30px', borderRadius: '10px', mb: '20px' }}>
+            <Flex sx={{ flexDirection: 'column' }}>
+                <Text sx={{ fontWeight: '700', fontSize: 3, mb: '12px' }}>Rating</Text>
+                <Box>{stars}</Box>
+            </Flex>
+
+            <Box sx={{height: '100px', width: '2px', backgroundColor: 'navy0', mx: '20px'}} />
 
             <Flex sx={{ flexDirection: 'column' }}>
                 <Text
@@ -24,7 +39,7 @@ const ReviewBoxes = (props) => {
                     {props.body}
                 </Text>
 
-                <Link href={`x.com/${props.author}`} sx={{textDecoration: 'none', color: 'white'}}>
+                <Link href={`https://www.x.com/${props.author}`} sx={{ textDecoration: 'none', color: 'white' }}>
                     <Flex>
                         <Image src={Xlogo} sx={{ maxWidth: '20px', mr: '6px' }} />
                         <Text sx={{ fontWeight: '700', textDecoration: 'none' }}>{props.author}</Text>
