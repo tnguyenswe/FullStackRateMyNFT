@@ -27,8 +27,10 @@ const Reviews = (props) => {
     const [error, setError] = useState(null);
     const [totalSupply, setTotalSupply] = useState(null);
     const [reviews, setReviews] = useState([]);
+    const [floorPrice, setFloorPrice] = useState(0);
 
     console.log("Lol", totalSupply);
+    console.log("Floor price", floorPrice);
 
 
     useEffect(() => {
@@ -54,6 +56,28 @@ const Reviews = (props) => {
                 setError(error);
             }
         };
+
+        const fetchFloorPrice = async () => {
+            const openseaLink = CardsData.openseaLink;
+            const parts = openseaLink.split('/');
+            const openseaProjectName = parts[parts.length - 1];
+
+            const url = `https://api.opensea.io/api/v2/collections/${openseaProjectName}/stats`
+
+            try{
+                const response = await axios.get(url, {
+                    headers: {
+                        accept: 'application/json',
+                        'X-API-Key': 'f6e47e53e0a14fb88fff914228dcf67d'
+                    }
+                });
+                setFloorPrice(response.data);
+
+
+            }catch (error){
+                setError(error);
+            }
+        }
 
         const fetchTotalSupply = async () => {
             const url = "https://purple-indulgent-sunset.quiknode.pro/0d28244ac219511bda5d028018f8463586ab67ac/";
@@ -89,6 +113,7 @@ const Reviews = (props) => {
         fetchReviews();
         fetchData();
         fetchTotalSupply();
+        fetchFloorPrice();
     }, []);
 
 
@@ -99,7 +124,7 @@ const Reviews = (props) => {
                 <CardLayout>
                     <CardBackground background={CardsData.background} />
                     <Flex sx={{ width: '100%', flexDirection: ['column', null, null, 'row'], mb: '50px' }}>
-                        <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                        <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center', my: ['20px', '0px']}}>
                             <PrimaryImage primary={CardsData.primary} />
                             <TextContainer>
                                 <Headline sx={{ pb: '10px', textAlign: 'start', fontSize: 4, fontWeight: '600' }}>{CardsData.projectName}</Headline>
@@ -109,7 +134,7 @@ const Reviews = (props) => {
                                 </Flex>
                             </TextContainer>
                         </Flex>
-                        <Grid sx={{ gridTemplateColumns: ['1fr 1fr', '1fr 1fr 1fr'], width: ['90%', null, null, '100%'], pt: ['20px', null, null, '0px'], justifySelf: ['center', null, null, 'end'], alignSelf: 'center' }}>
+                        <Grid sx={{ gridTemplateColumns: ['1fr', '1fr 1fr 1fr'], width: ['90%', null, null, '100%'], pt: ['20px', null, null, '0px'], justifySelf: ['center', null, null, 'end'], alignSelf: 'center' }}>
                             <Flex sx={{ flexDirection: 'column', justifyContent: 'center'}}>
                                 <Text sx={{ fontSize: 4, fontWeight: '700', textAlign: ['center', null, null, 'start'] }}>
                                     {totalSupply ? totalSupply : "Loading..."}
@@ -137,9 +162,11 @@ const Reviews = (props) => {
                                 </Text>
                             </Flex> */}
 
-                            <Flex sx={{ flexDirection: 'column', justifyContent: 'center' }}>
+                            <Flex sx={{ flexDirection: 'column', justifyContent: 'center', my: ['10px', '0px'] }}>
                                 <Text sx={{ fontSize: 4, fontWeight: '700', textAlign: ['center', null, null, 'start'] }}>
-                                    Ξ {responseData ? (responseData && responseData.price && responseData.price.totalNative) : "Loading..."}
+                                    Ξ {floorPrice ? (floorPrice && floorPrice.total && floorPrice.total.floor_price.toFixed(2)) : "Loading..."}
+                                    
+                                    {/* {responseData ? (responseData && responseData.price && responseData.price.totalNative) : "Loading..."} */}
                                 </Text>
                                 <Text sx={{ fontSize: 2, color: 'gray50', textAlign: ['center', null, null, 'start'] }}>
                                     Floor Price

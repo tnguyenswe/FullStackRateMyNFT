@@ -18,6 +18,7 @@ import CreateReviews from './pages/createReview';
 import { Image } from 'theme-ui';
 import Ellipse from './assets/ellipse.png';
 import PFP from './assets/userPFP.jpeg';
+import Donation from './pages/donation';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -29,6 +30,7 @@ ReactDOM.render(
           <Route path="/" element={<App/>} />
           <Route path="/RateMyNFT" element={<App/>} />
           <Route path="/about" element={<About/>} />
+          <Route path="/donation" element={<Donation/>} />
           <Route path="/reviews/:id" element={<Reviews/>}/>
           <Route path="/createReview/:id" element={<CreateReviews/>}/>
         </Routes>

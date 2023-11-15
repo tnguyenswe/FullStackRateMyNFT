@@ -19,6 +19,10 @@ const NavBar = (props) => {
         setNavState('home')
     }
 
+    const clickDonate = () => {
+        setNavState('donate')
+    }
+
     return (
         <Grid
             sx={(theme) => ({
@@ -35,7 +39,7 @@ const NavBar = (props) => {
             })}
         >
             <Flex sx={{ alignItems: 'center', alignSelf: 'start', justifySelf: 'start' }}>
-                <Link to="/" sx={{ textDecoration: 'none', color: 'inherit', justifySelf: 'start', display: 'flex' }}>
+                <Link onClick={clickHome} to="/" sx={{ textDecoration: 'none', color: 'inherit', justifySelf: 'start', display: 'flex' }}>
                     <Text sx={{ fontWeight: '700', fontSize: 4 }}>RateMy<Text sx={{ fontWeight: '700', fontSize: 4, color: 'navy10', mr: '10px' }}>NFT</Text></Text>
                 </Link>
                 {/* <SearchBar /> */}
@@ -78,7 +82,7 @@ const NavBar = (props) => {
                 </Grid>
                 <Image src={Line} sx={{ mr: '20px', ml: '10px', display: ['none', null, null, 'flex'] }} />
 
-                <Link to="/createReview" sx={{textDecoration: 'none', color: 'white10'}}>
+                <Link onClick={clickDonate} to="/donation" sx={{textDecoration: 'none', color: 'white10'}}>
                     <Box sx={{
                         display: ['none','flex'],
                         justifyContent: 'center',
