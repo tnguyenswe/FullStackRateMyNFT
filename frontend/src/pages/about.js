@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
-import { Grid, Label, Box, Input, Textarea, Button, Flex, Image, Text } from "theme-ui";
+import { Flex, Text } from "theme-ui";
 import React from "react";
 
 const About = () => {
     return(
-        <Flex sx={{justifyContent: 'center', maxWidth: '100%', mx: '10vw', justifySelf: 'center'}}>
+        <Flex sx={{justifyContent: 'center', maxWidth: '100%', mx: '10vw', justifySelf: 'center', textAlign: 'center'}}>
                 <Text sx={{fontSize: 3, fontWeight: '700'}}>
                     Hey there! Welcome to RateMy<span sx={{color: 'navy10'}}>NFT</span>.<br/><br/>
                     This is a platform developed for the purpose of allowing people to review NFT projects. <br/> <br/>

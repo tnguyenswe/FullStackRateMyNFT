@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Grid, Label, Box, Input, Textarea, Button, Flex, Image, Text } from "theme-ui";
+import { Flex, Text } from "theme-ui";
 import React from "react";
 
 const About = () => {

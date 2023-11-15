@@ -17,7 +17,7 @@ import About from './pages/about';
 import CreateReviews from './pages/createReview';
 import { Image } from 'theme-ui';
 import Ellipse from './assets/ellipse.png';
-import PFP from './assets/userPFP.jpeg';
+import PFP from './assets/userPFP.png';
 import Donation from './pages/donation';
 
 ReactDOM.render(

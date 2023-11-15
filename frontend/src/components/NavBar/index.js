@@ -1,8 +1,6 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Text, Button, Image, Box, Grid } from "theme-ui";
+import { Flex, Text, Image, Box, Grid } from "theme-ui";
 import React, { useState } from "react";
-import Headline from '../Headline';
-import SearchBar from '../SearchBar';
 import { Link } from 'react-router-dom';
 import Ethereum from '../../assets/ethereum-ic.svg';
 import Ellipse from '../../assets/ellipse-2.png';

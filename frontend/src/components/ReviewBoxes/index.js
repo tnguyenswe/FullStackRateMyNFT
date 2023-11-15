@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from "react";
-import { Grid, Label, Box, Input, Textarea, Button, Flex, Image, Text, Link } from "theme-ui";
+import { Box, Flex, Image, Text, Link } from "theme-ui";
 import Xlogo from '../../assets/x-logo.png';
 import Star from '../../assets/star.png';
 
@@ -32,7 +32,7 @@ const ReviewBoxes = (props) => {
                         fontSize: 3,
                         mb: '10px'
                     }}>
-                    Project Name: {props.projectName}
+                    Project Name: {props.projectname}
                 </Text>
 
                 <Text sx={{ fontSize: 2, fontWeight: '700', mb: '10px' }}>

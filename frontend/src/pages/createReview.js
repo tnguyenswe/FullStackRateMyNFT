@@ -3,11 +3,10 @@ import { Grid, Label, Box, Input, Textarea, Button, Flex, Image, Text } from "th
 import React from "react";
 import Headline from '../components/Headline';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
-import SingleCard from '../components/PreviewCards/SingleCard';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CircleWavyCheck } from 'phosphor-react';
-import { Link } from "react-router-dom";
+import AppConfig from "../config";
+
 
 
 const CardLayout = (props) => (<Flex {...props} sx={{ minWidth: '90vw', maxWidth: '90vw', height: '100%', borderRadius: '40px', flexDirection: 'column', pb: '30px', overflow: 'hidden' }}>{props.children}</Flex>)
@@ -21,75 +20,7 @@ const TextContainer = (props) => (<Flex {...props} sx={{ alignSelf: ['center', '
 const Reviews = (props) => {
     const location = useLocation();
     const CardsData = location.state
-    const [filteredReviews, setFilteredReviews] = useState([]);
-    const [responseData, setResponseData] = useState(null);
-    const [error, setError] = useState(null);
-    const [totalSupply, setTotalSupply] = useState(null);
-    const [reviews, setReviews] = useState([]);
-    console.log("Heyyy", CardsData);
-    console.log(CardsData.projectName, CardsData.contractAddress);
-    useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8800/reviews/${CardsData.contractAddress}`)
-                setReviews(response.data);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`https://ethereum-rest.api.mnemonichq.com/marketplaces/v1beta2/floors/${CardsData.contractAddress}`, {
-                    headers: {
-                        accept: 'application/json',
-                        'X-API-Key': 'EdhMSty77ltcuF7ydGGckqEb6suBBHzbdrVWxnLmK1nFlavP'
-                    }
-                });
-                setResponseData(response.data);
-            } catch (error) {
-                setError(error);
-            }
-        };
-
-        const fetchTotalSupply = async () => {
-            const url = "https://purple-indulgent-sunset.quiknode.pro/0d28244ac219511bda5d028018f8463586ab67ac/";
-
-            const payload = {
-                id: 67,
-                jsonrpc: "2.0",
-                method: "qn_fetchNFTsByCollection",
-                params: [{
-                    collection: CardsData.contractAddress,
-                    omitFields: ["traits"],
-                    page: 1,
-                    perPage: 10,
-                }]
-            };
-
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                const data = await response.json();
-                setTotalSupply(data.result.totalItems);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchReviews();
-        fetchData();
-        fetchTotalSupply();
-    }, []);
-
-
-    console.log(CardsData);
+    const navigate = useNavigate();
 
     return (
         <Flex sx={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
@@ -99,9 +30,9 @@ const Reviews = (props) => {
                     <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                         <PrimaryImage primary={CardsData.primary} />
                         <TextContainer>
-                            <Headline sx={{ pb: '10px', textAlign: 'start', fontSize: 4, fontWeight: '600' }}>{CardsData.projectName}</Headline>
+                            <Headline sx={{ pb: '10px', textAlign: 'start', fontSize: 4, fontWeight: '600' }}>{CardsData.projectname}</Headline>
                             <Flex sx={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <Text sx={{ color: 'navy0', pr: '2px', fontSize: 2, fontWeight: '600', textAlign: 'center' }}>by {CardsData.creatorName}</Text>
+                                <Text sx={{ color: 'navy0', pr: '2px', fontSize: 2, fontWeight: '600', textAlign: 'center' }}>by {CardsData.creatorname}</Text>
                                 <CircleWavyCheck size={20} sx={{ color: 'navy0' }} />
                             </Flex>
                         </TextContainer>
@@ -109,7 +40,7 @@ const Reviews = (props) => {
                     <Grid sx={{ gridTemplateColumns: ['1fr 1fr', '1fr 1fr 1fr'], width: ['90%', null, null, '100%'], pt: ['20px', null, null, '0px'], justifySelf: ['center', null, null, 'end'], alignSelf: 'center' }}>
                         <Flex sx={{ flexDirection: 'column', justifyContent: 'center' }}>
                             <Text sx={{ fontSize: 4, fontWeight: '700', textAlign: ['center', null, null, 'start'] }}>
-                                {totalSupply ? totalSupply : "Loading..."}
+                                {CardsData.totalSupply ? CardsData.totalSupply : "Loading..."}
                             </Text>
                             <Text sx={{ fontSize: 2, color: 'gray50', textAlign: ['center', null, null, 'start'] }}>
                                 Total Supply
@@ -117,7 +48,7 @@ const Reviews = (props) => {
                         </Flex>
                         <Flex sx={{ flexDirection: 'column', justifyContent: 'center' }}>
                             <Text sx={{ fontSize: 4, fontWeight: '700', textAlign: ['center', null, null, 'start'] }}>
-                                Ξ {responseData ? (responseData && responseData.price && responseData.price.totalNative) : "Loading..."}
+                                Ξ {CardsData.floorPrice ? (CardsData.floorPrice && CardsData.floorPrice.total && CardsData.floorPrice.total.floor_price.toFixed(2)) : "Loading..."}
                             </Text>
                             <Text sx={{ fontSize: 2, color: 'gray50', textAlign: ['center', null, null, 'start'] }}>
                                 Floor Price
@@ -145,17 +76,17 @@ const Reviews = (props) => {
 
                 <Box as="form" onSubmit={(e) => {
                     e.preventDefault();
-                    axios.post('http://localhost:8800/reviews',
+                    axios.post(AppConfig.backendEndpoint + '/reviews',
                     {
                         rating: e.target.rating.value,
                         author: e.target.author.value,
                         body: e.target.body.value, 
-                        contractAddress: CardsData.contractAddress,
-                        projectName: CardsData.projectName
+                        contractAddress: CardsData.contractaddress,
+                        projectName: CardsData.projectname
                     })
                     .then(res => {
-                        console.log(res);
                         console.log(res.data);
+                        navigate('/');
                     })
                     .catch(error => {
                         console.error('Error adding review:', error);

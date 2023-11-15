@@ -1,16 +1,16 @@
 /** @jsxImportSource theme-ui */
-import { Grid, Label, Box, Input, Textarea, Button, Flex, Image, Text } from "theme-ui";
+import { Grid, Box, Flex, Image, Text } from "theme-ui";
 import React from "react";
 import Headline from '../../src/components/Headline';
 import ReviewBoxes from '../../src/components/ReviewBoxes';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import SingleCard from '../components/PreviewCards/SingleCard';
 import { useLocation, Link } from "react-router-dom";
 import { CircleWavyCheck } from 'phosphor-react';
+import AppConfig from "../config";
 
 
-const CardHref = (props) => (<Box state={{ projectName: props.projectName, background: props.background, primary: props.primary, creatorName: props.creatorName, projectHref: props.projectHref, contractAddress: props.contractAddress }} {...props} sx={{ textDecoration: 'none', color: 'inherit' }}>{props.children}</Box>)
+const CardHref = (props) => (<Box state={{ projectname: props.projectname, background: props.background, primary: props.primary, creatorname: props.creatorname, projecthref: props.projecthref, contractaddress: props.contractaddress }} {...props} sx={{ textDecoration: 'none', color: 'inherit' }}>{props.children}</Box>)
 
 const CardLayout = (props) => (<Flex {...props} sx={{ minWidth: '90vw', maxWidth: '90vw', height: '100%', borderRadius: '40px', flexDirection: 'column', pb: '30px', overflow: 'hidden' }}>{props.children}</Flex>)
 
@@ -23,46 +23,27 @@ const TextContainer = (props) => (<Flex {...props} sx={{ alignSelf: ['center', '
 const Reviews = (props) => {
     const location = useLocation();
     const CardsData = location.state
-    const [responseData, setResponseData] = useState(null);
-    const [error, setError] = useState(null);
     const [totalSupply, setTotalSupply] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [floorPrice, setFloorPrice] = useState(0);
 
-    console.log("Lol", totalSupply);
-    console.log("Floor price", floorPrice);
-
-
     useEffect(() => {
         const fetchReviews = async () => {
             try{
-                const response = await axios.get(`http://localhost:8800/reviews/${CardsData.contractAddress}`)
+                const response = await axios.get(AppConfig.backendEndpoint + `/reviews/${CardsData.contractaddress}`)
                 setReviews(response.data);
             }catch(err){
-                console.log(err);
+                console.error(err);
             }
         }
 
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`https://ethereum-rest.api.mnemonichq.com/marketplaces/v1beta2/floors/${CardsData.contractAddress}`, {
-                    headers: {
-                        accept: 'application/json',
-                        'X-API-Key': 'EdhMSty77ltcuF7ydGGckqEb6suBBHzbdrVWxnLmK1nFlavP'
-                    }
-                });
-                setResponseData(response.data);
-            } catch (error) {
-                setError(error);
-            }
-        };
 
         const fetchFloorPrice = async () => {
-            const openseaLink = CardsData.openseaLink;
+            const openseaLink = CardsData.opensealink;
             const parts = openseaLink.split('/');
-            const openseaProjectName = parts[parts.length - 1];
+            const openseaprojectname = parts[parts.length - 1];
 
-            const url = `https://api.opensea.io/api/v2/collections/${openseaProjectName}/stats`
+            const url = `https://api.opensea.io/api/v2/collections/${openseaprojectname}/stats`
 
             try{
                 const response = await axios.get(url, {
@@ -75,7 +56,7 @@ const Reviews = (props) => {
 
 
             }catch (error){
-                setError(error);
+                console.error(error);
             }
         }
 
@@ -87,7 +68,7 @@ const Reviews = (props) => {
                 jsonrpc: "2.0",
                 method: "qn_fetchNFTsByCollection",
                 params: [{
-                    collection: CardsData.contractAddress,
+                    collection: CardsData.contractaddress,
                     omitFields: ["traits"],
                     page: 1,
                     perPage: 10,
@@ -111,25 +92,24 @@ const Reviews = (props) => {
         };
 
         fetchReviews();
-        fetchData();
         fetchTotalSupply();
         fetchFloorPrice();
-    }, []);
+    }, [CardsData.contractaddress, CardsData.opensealink]);
 
 
 
     return (
         <Flex sx={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-            <CardHref projectHref={CardsData.projectHref} projectName={CardsData.projectName} background={CardsData.background} primary={CardsData.primary} creatorName={CardsData.creatorName} contractAddress={CardsData.contractAddress}>
+            <CardHref projecthref={CardsData.projecthref} projectname={CardsData.projectname} background={CardsData.background} primary={CardsData.primary} creatorname={CardsData.creatorname} contractaddress={CardsData.contractaddress}>
                 <CardLayout>
                     <CardBackground background={CardsData.background} />
                     <Flex sx={{ width: '100%', flexDirection: ['column', null, null, 'row'], mb: '50px' }}>
                         <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center', my: ['20px', '0px']}}>
                             <PrimaryImage primary={CardsData.primary} />
                             <TextContainer>
-                                <Headline sx={{ pb: '10px', textAlign: 'start', fontSize: 4, fontWeight: '600' }}>{CardsData.projectName}</Headline>
+                                <Headline sx={{ pb: '10px', textAlign: 'start', fontSize: 4, fontWeight: '600' }}>{CardsData.projectname}</Headline>
                                 <Flex sx={{ justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text sx={{ color: 'navy0', pr: '2px', fontSize: 2, fontWeight: '600', textAlign: 'center' }}>by {CardsData.creatorName}</Text>
+                                    <Text sx={{ color: 'navy0', pr: '2px', fontSize: 2, fontWeight: '600', textAlign: 'center' }}>by {CardsData.creatorname}</Text>
                                     <CircleWavyCheck size={20} sx={{ color: 'navy0' }} />
                                 </Flex>
                             </TextContainer>
@@ -184,7 +164,7 @@ const Reviews = (props) => {
                                     justifySelf: 'center',
                                     textDecoration: 'none', 
                                     color: 'inherit'
-                                }} to={`/createReview/${CardsData.projectHref}`} state={{projectName: CardsData.projectName, background: CardsData.background, primary: CardsData.primary, creatorName: CardsData.creatorName, projectHref: CardsData.projectHref, contractAddress: CardsData.contractAddress}} {...CardsData} >
+                                }} to={`/createReview/${CardsData.projecthref}`} state={{projectname: CardsData.projectname, background: CardsData.background, primary: CardsData.primary, creatorname: CardsData.creatorname, projecthref: CardsData.projecthref, contractaddress: CardsData.contractaddress, floorPrice: floorPrice, totalSupply: totalSupply}} {...CardsData} >
                                 <Box sx={{
                                     borderRadius: '100px',
                                     px: '24px',
@@ -204,12 +184,13 @@ const Reviews = (props) => {
 
                     <Box>
                         {reviews.map(
-                            review => (
-                                <ReviewBoxes 
+                            (review, index) => (
+                                <ReviewBoxes
+                                key={index} 
                                 rating={review.rating}
                                 body={review.body}
                                 author={review.author}
-                                projectName={review.projectName}
+                                projectname={review.projectName}
                                 />
                             )
                         )}

@@ -1,20 +1,133 @@
-import express from "express"
-import mysql from "mysql2"
-import cors from "cors"
-// const mysql = require('mysql2');
+const express = require("express");
+const mysql = require("mysql2");
+const cors = require("cors");
+const config = require('./config');
 
 const app = express()
 
-const db = mysql.createConnection({
-    host: "localhost",
-    user: 'tnguyenswe',
-    password: "password1",
-    database: "RateMyNFT"
+// const db = mysql.createConnection({
+//     host: config.databaseHost,
+//     user: config.databaseUsername,
+//     password: config.databasePassword,
+//     database: config.databaseName
 
-})
+// })
+
+const db = mysql.createConnection(config.DATABASE_URL)
 
 app.use(express.json());
 app.use(cors());
+
+app.get("/createTables", (req, res) => {
+  // Define SQL statements to create the 'Collections' and 'Reviews' tables
+  const createCollectionsTableSQL = `
+    CREATE TABLE IF NOT EXISTS Collections (
+      id INT PRIMARY KEY AUTO_INCREMENT,
+      projectName VARCHAR(1000),
+      projectHref VARCHAR(1000),
+      creatorName VARCHAR(1000),
+      creatorLink VARCHAR(1000),
+      openseaLink VARCHAR(1000),
+      background VARCHAR(1000),
+      pfp VARCHAR(1000),
+      contractAddress VARCHAR(255)
+    )
+  `;
+
+  const createReviewsTableSQL = `
+    CREATE TABLE IF NOT EXISTS Reviews (
+      id INT PRIMARY KEY AUTO_INCREMENT,
+      rating INT,
+      body TEXT,
+      author VARCHAR(255),
+      contractAddress VARCHAR(255),
+      projectName VARCHAR(255)
+    )
+  `;
+
+   db.query(createCollectionsTableSQL, (err) => {
+    if (err) {
+      console.error('Error creating Collections table:', err.message);
+    } else {
+      console.log('Collections table created successfully.');
+    }
+  });
+
+  db.query(createReviewsTableSQL, (err) => {
+    if (err) {
+      console.error('Error creating Reviews table:', err.message);
+    } else {
+      console.log('Reviews table created successfully.');
+    }
+  });
+});
+
+app.get("/insertInitialData", (req, res) => {
+  const insertReviewsDataSQL = `
+  INSERT INTO Reviews (rating, body, author, contractAddress, projectName)
+  VALUES 
+  ('5', 'This NFT is awesome', 'CryptoTomYT', "0xed5af388653567af2f388e6224dc7c4b3241c544", 'Azuki'),
+  ('5', 'Ikuzo.', 'ZAGABOND', "0xed5af388653567af2f388e6224dc7c4b3241c544", 'Azuki');
+  `
+
+  const insertCollectionsDataSQL = `
+  INSERT INTO Collections(projectName, projectHref, creatorName, creatorLink, openseaLink, background, pfp, contractAddress)
+  VALUES
+  ('Bored Ape Yacht Club', 'BoredApeYachtClub', 'BoredApeYachtClub', 'https://opensea.io/BoredApeYachtClub?tab=created',
+  'https://opensea.io/collection/boredapeyachtclub', 'https://lh3.googleusercontent.com/i5dYZRkVCUK97bfprQ3WXyrT9BnLSZtVKGJlKQ919uaUB0sxbngVCioaiyu9r6snqfi2aaTyIvv6DHm4m2R3y7hMajbsv14pSZK8mhs=h600',
+  'https://lh3.googleusercontent.com/Ju9CkWtV-1Okvf45wo8UctR-M9He2PjILP0oOvxE89AyiPPGtrR3gysu1Zgy0hjd2xKIgjJJtWIc0ybj4Vd7wv8t3pxDGHoJBzDB=s130',
+  '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d'),
+  ('Clone X - X Takashi Murakami', 'CloneX', 'RTFKTCLONEXTM', 'https://opensea.io/RTFKTCLONEXTM',
+   'https://opensea.io/collection/clonex',
+   'https://lh3.googleusercontent.com/4elUtz8UyFYDH34vDxd4hpQX8S-EdkFq8s9ombkuQTDBWLwHvsjRM_RXWT2zX8Vt2bAiO2BHslwN57FyTW1JIn_FyFI0BsZfmvmeJQ=h600',
+   'https://lh3.googleusercontent.com/XN0XuD8Uh3jyRWNtPTFeXJg_ht8m5ofDx6aHklOiy4amhFuWUa0JaR6It49AH8tlnYS386Q0TW_-Lmedn0UET_ko1a3CbJGeu5iHMg=s168',
+   '0x49cf6f5d44e70224e2e23fdcdd2c053f30ada28b'),
+  ('Azuki', 'Azuki', 'TeamAzuki', 'https://opensea.io/TeamAzuki?tab=created',
+   'https://opensea.io/collection/azuki',
+   'https://lh3.googleusercontent.com/O0XkiR_Z2--OPa_RA6FhXrR16yBOgIJqSLdHTGA0-LAhyzjSYcb3WEPaCYZHeh19JIUEAUazofVKXcY2qOylWCdoeBN6IfGZLJ3I4A=h600',
+   'https://lh3.googleusercontent.com/H8jOCJuQokNqGBpkBN5wk1oZwO7LM8bNnrHCaekV2nKjnCqw6UB5oaH8XyNeBDj6bA_n1mjejzhFQUP3O1NfjFLHr3FOaeHcTOOT=s0',
+  '0xed5af388653567af2f388e6224dc7c4b3241c544'
+  ),
+  ('Pudgy Penguins', 'PudgyPenguins', 'TheIglooCompany', 'https://opensea.io/TheIglooCompany',
+   'https://opensea.io/collection/pudgypenguins',
+   'https://i.seadn.io/gcs/files/8a26e3de0f309089cbb1e5ab969fc0bc.png?auto=format&dpr=1&w=3840',
+   'https://i.seadn.io/gae/yNi-XdGxsgQCPpqSio4o31ygAV6wURdIdInWRcFIl46UjUQ1eV7BEndGe8L661OoG-clRi7EgInLX4LPu9Jfw4fq0bnVYHqg7RFi?auto=format&dpr=1&w=384',
+  '0xbd3531da5cf5857e7cfaa92426877b022e612cf8'
+  ),
+  ('Doodles', 'Doodles', 'Doodles_LLC', 'https://opensea.io/Doodles_LLC',
+   'https://opensea.io/collection/doodles-official',
+    'https://lh3.googleusercontent.com/svc_rQkHVGf3aMI14v3pN-ZTI7uDRwN-QayvixX-nHSMZBgb1L1LReSg1-rXj4gNLJgAB0-yD8ERoT-Q2Gu4cy5AuSg-RdHF9bOxFDw=h600',
+   'https://lh3.googleusercontent.com/7B0qai02OdHA8P_EOVK672qUliyjQdQDGNrACxs7WnTgZAkJa_wWURnIFKeOh5VTf8cfTqW3wQpozGedaC9mteKphEOtztls02RlWQ=s168',
+  '0x8a90cab2b38dba80c64b7734e58ee1db38b8992e'
+  ),
+  ( 'Captainz', 'Captainz', '9GAG', 'https://opensea.io/9GAG',
+   'https://opensea.io/collection/thecaptainz',
+   'https://i.seadn.io/gcs/files/62448fe425d5e5e2bd44ded754865f37.png?auto=format&dpr=1&w=3840',
+   'https://i.seadn.io/gcs/files/6df4d75778066bce740050615bc84e21.png?auto=format&dpr=1&w=384',
+  '0x769272677fab02575e84945f03eca517acc544cc'
+  );
+`;
+
+db.query(insertCollectionsDataSQL, (err) => {
+  if (err) {
+    console.error('Error inserting data', err.message);
+  } else {
+    res.send('Inserted collections data successfully');
+    console.log('Inserted collections data successfully.');
+  }
+});
+
+db.query(insertReviewsDataSQL, (err) => {
+  if (err) {
+    console.error('Error inserting data', err.message);
+  } else {
+    res.send('Inserted reviews data successfully');
+    console.log('Inserted reviews data successfully.');
+  }
+});
+
+
+})
 
 //You can visit localhost:8800 and see this
 app.get("/", (req, res) => {
@@ -29,6 +142,15 @@ app.get("/reviews", (req,res) => {
         if(err) {return res.json(err)}
         return res.json(data)
     })
+})
+
+app.get("/collections", (req,res) => {
+  const query = "SELECT * FROM Collections"
+
+  db.query(query, (err, data) => {
+    if(err) {return res.json(err)}
+    return res.json(data)
+  })
 })
 
 app.get('/reviews/:contractAddress', (req, res) => {
@@ -86,6 +208,9 @@ app.get('/deleteAllReviews', (req, res) => {
       res.send('All entries in the Reviews table have been deleted.');
     });
   });
+
+
+
 
 app.listen(8800, () => {
     console.log("Connected to backend!")
