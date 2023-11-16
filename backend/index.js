@@ -1,19 +1,28 @@
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
-const config = require('./config');
+
+let config;
+
+try{
+  config = require('./config');
+} catch(error){
+  console.error("Error loading config module");
+  config = {}
+}
 
 const app = express()
 
 // const db = mysql.createConnection({
-//     host: config.databaseHost,
-//     user: config.databaseUsername,
-//     password: config.databasePassword,
-//     database: config.databaseName
+//     host: process.env.databaseHost || config.databaseHost,
+//     user: process.env.databaseUsername || config.databaseUsername,
+//     password: process.env.databasePassword || config.databasePassword,
+//     database: process.env.databaseName || config.databaseName
 
 // })
+console.log(process.env.DATABASE_URL);
 
-const db = mysql.createConnection(config.DATABASE_URL)
+const db = mysql.createConnection(process.env.DATABASE_URL || config.DATABASE_URL)
 
 app.use(express.json());
 app.use(cors());
@@ -211,7 +220,8 @@ app.get('/deleteAllReviews', (req, res) => {
 
 
 
+const port = process.env.PORT || 8800;
 
-app.listen(8800, () => {
+app.listen(port, () => {
     console.log("Connected to backend!")
 })
