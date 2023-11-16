@@ -1,4 +1,12 @@
-# FullRateMyNFT
+# Full Stack Rate My NFT
+
+This contains the full source code of the Rate My NFT web application.
+
+This was built with MySQL, Express, Node, and React.
+
+The front end was deployed with Netlify, and the back end was deployed with Heroku.
+
+You can view the fully deployed web app [here](https://main--unrivaled-sable-51f6aa.netlify.app/)
 
 # Running the app
 
