@@ -39,6 +39,6 @@ Window 2:
     npm install && npm start
 ```
 
-Once you have both windows running the frontend and backend respectively, you will be able to view the app at [localhost:3000](localhost:3000)
+Once you have both windows running the frontend and backend respectively, you will be able to view the app at [localhost:3000](http://localhost:3000/)
 
-You can also access the backend at [localhost:8800](localhost:8800)
+You can also access the backend at [localhost:8800](http://localhost:8800/)
