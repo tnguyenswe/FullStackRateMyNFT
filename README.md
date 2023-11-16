@@ -11,35 +11,26 @@ Here are the following steps for doing so:
     cd FullStackRateMyNFT
 ```
 
-Here, you will want to open another terminal window and navigate to the FullStackRateMyNFT folder directory on both windows.
+If you would like to run this locally, you will need to create config files in the backend and frontend folders.
+
+I've listed example configs under ```/exampleConfigs```, simply create the config files at the proper routes and fill out the values.
+
+After, you will open another terminal window and navigate to the FullStackRateMyNFT folder directory on both windows.
 
 Window 1:
 
 ```
     cd backend
-    npm start
-```
-
-If this does not work, you will need to delete the node_modules folder and package-lock.json file. Then do the following:
-
-```
-    
-    npm install
-    npm start
+    npm install && npm start
 ```
 
 Window 2:
 
 ```
     cd frontend
-    npm start
-```
-
-If this does not work, you will need to delete the node_modules folder and package-lock.json file. Then do the following:
-
-```
-    npm install
-    npm start
+    npm install && npm start
 ```
 
 Once you have both windows running the frontend and backend respectively, you will be able to view the app at localhost:3000
+
+You can also access the backend at localhost:8800
