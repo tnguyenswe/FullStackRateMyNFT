@@ -10,7 +10,7 @@ const PreviewCards = () => {
 
     useEffect(() => {
         const queryDatabase = async () => {
-            const response = await axios.get(AppConfig.backendEndpoint + "/collections");
+            const response = await axios.get(process.env.backendEndpoint || AppConfig.backendEndpoint + "/collections");
             setQueryData(response.data);
         }
         queryDatabase();

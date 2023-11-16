@@ -30,7 +30,7 @@ const Reviews = (props) => {
     useEffect(() => {
         const fetchReviews = async () => {
             try{
-                const response = await axios.get(AppConfig.backendEndpoint + `/reviews/${CardsData.contractaddress}`)
+                const response = await axios.get(process.env.backendEndpoint || AppConfig.backendEndpoint + `/reviews/${CardsData.contractaddress}`)
                 setReviews(response.data);
             }catch(err){
                 console.error(err);
@@ -49,7 +49,7 @@ const Reviews = (props) => {
                 const response = await axios.get(url, {
                     headers: {
                         accept: 'application/json',
-                        'X-API-Key': 'f6e47e53e0a14fb88fff914228dcf67d'
+                        'X-API-Key': process.env.openseaAPIKey || AppConfig.openseaAPIKey
                     }
                 });
                 setFloorPrice(response.data);

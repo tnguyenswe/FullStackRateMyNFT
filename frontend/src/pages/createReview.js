@@ -76,7 +76,7 @@ const Reviews = (props) => {
 
                 <Box as="form" onSubmit={(e) => {
                     e.preventDefault();
-                    axios.post(AppConfig.backendEndpoint + '/reviews',
+                    axios.post(process.env.backendEndpoint || AppConfig.backendEndpoint + '/reviews',
                     {
                         rating: e.target.rating.value,
                         author: e.target.author.value,
