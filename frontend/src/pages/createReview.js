@@ -76,7 +76,7 @@ const Reviews = (props) => {
 
                 <Box as="form" onSubmit={(e) => {
                     e.preventDefault();
-                    axios.post(process.env.backendEndpoint || AppConfig.backendEndpoint + '/reviews',
+                    axios.post("https://noderatemynft-2aee21b93305.herokuapp.com/collections",
                     {
                         rating: e.target.rating.value,
                         author: e.target.author.value,

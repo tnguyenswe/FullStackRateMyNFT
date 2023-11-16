@@ -10,7 +10,7 @@ const PreviewCards = () => {
 
     useEffect(() => {
         const queryDatabase = async () => {
-            const response = await axios.get(process.env.backendEndpoint || AppConfig.backendEndpoint + "/collections");
+            const response = await axios.get("https://noderatemynft-2aee21b93305.herokuapp.com/collections");
             setQueryData(response.data);
         }
         queryDatabase();
