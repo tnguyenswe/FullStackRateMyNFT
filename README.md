@@ -23,6 +23,7 @@ Window 1:
 If this does not work, you will need to delete the node_modules folder and package-lock.json file. Then do the following:
 
 ```
+    
     npm install
     npm start
 ```
